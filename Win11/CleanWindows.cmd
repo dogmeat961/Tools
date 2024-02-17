@@ -9,21 +9,21 @@ set /p "continue=Press ENTER to start the process..."
 setlocal enabledelayedexpansion
 
 :: Check for administrative privileges
-::net session >nul 2>&1
-::if %errorLevel% == 0 (
-   :: echo Running with administrative privileges
-    ::goto :admin
-::) else (
-   :: echo Requesting administrative privileges...
-   :: goto :elevate
-::)
+net session >nul 2>&1
+if %errorLevel% == 0 (
+    echo Running with administrative privileges
+    goto :admin
+) else (
+    echo Requesting administrative privileges...
+    goto :elevate
+)
 
-::elevate
+:elevate
     :: Re-launch the script with administrative privileges
-    ::powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c ""%~f0""' -Verb runAs"
-    ::exit /b
+    powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c ""%~f0""' -Verb runAs"
+    exit /b
 
-::admin
+:admin
     :: List of folders to clean
     set "folders_to_clean=%WinDir%\Temp %WinDir%\Prefetch %Temp% %AppData%\Temp %HomePath%\AppData\LocalLow\Temp"
 
